@@ -6,6 +6,8 @@ I build personal applications around problems I know first-hand: managing a job 
 
 I use AI coding tools to implement functionality. I define the needs, business rules and priorities, test the result, and direct the next improvement.
 
+**[View the project presentation](presentation/README.md)** · [Download PowerPoint](presentation/Neringa_Bateikiene_Product_Portfolio.pptx?raw=true)
+
 ## Explore my projects
 
 ### [Career CRM](projects/career-crm/README.md)
