@@ -12,13 +12,17 @@ I use AI coding tools to implement functionality. I define the needs, business r
 
 ### [Career CRM](projects/career-crm/README.md)
 
-**A personal workspace for the entire job-search process.**
+**A personal workspace for finding opportunities and managing application history.**
 
-Career CRM connects opportunity discovery, advertisement checks, applications and recruitment events. AI helps find opportunities and interpret emails. The user reviews proposed changes before they become part of the application history.
+Career CRM brings source checks, fit assessments and suggested actions into one review queue. AI helps find opportunities and interpret recruitment emails. The user confirms changes, while event rules keep application statuses and history consistent.
+
+[![Career CRM opportunity review dashboard with fictional examples](projects/career-crm/images/opportunity-review-dashboard.png)](projects/career-crm/README.md#see-the-system)
+
+*Anonymised application screenshot, translated into English for presentation.*
 
 **A decision worth exploring:** how to use AI suggestions while preserving reliable statuses and event history.
 
-[Read the Career CRM case study](projects/career-crm/README.md)
+[Explore the screenshots and Career CRM case study](projects/career-crm/README.md#see-the-system)
 
 ### [NB Accounting](projects/nb-accounting/README.md)
 

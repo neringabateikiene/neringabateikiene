@@ -1,75 +1,90 @@
-[← Back to my portfolio](../../README.md)
+[Back to my portfolio](../../README.md)
 
 # Career CRM
 
-## A personal job-search application, built around real decisions
+## From job discovery to a reliable application history
 
-I developed Career CRM to manage my own job search: finding opportunities, deciding which ones to pursue, keeping track of applications and following what happens next. I use the application myself and continue improving it when real situations reveal missing rules or awkward steps.
+I built Career CRM to manage my own job search: finding opportunities, deciding which ones to pursue, recording applications and following what happens next.
 
-The project combines systems analysis with hands-on, AI-assisted product development. I define the requirements, data relationships, priorities and expected behaviour. AI coding tools help implement the code; I test the result, identify mismatches and request corrections. I turn a real need into a coherent application and take responsibility for how it behaves.
+The starting problem was fragmented information. The same opportunity could appear on several websites, while notes, emails and application history lived elsewhere. I wanted one workspace where I could review suggestions, understand the evidence and keep the next action clear.
 
-**Status:** Active personal application, used locally. Source code is private. This is a project presentation, not a public live service.
+I define the needs, data relationships and workflow rules, guide AI-assisted implementation and test the behaviour through actual use.
 
-## The problem I wanted to solve
+**Status:** Personal application under active development, used locally. Source code is private.
 
-A job opportunity can appear on several websites, while its application history lives elsewhere: in emails, notes and a spreadsheet. A link may still open after the vacancy closes. An email may confirm an application, invite me to an interview or simply change an existing interview time.
+## See the system
 
-I wanted one place to connect these pieces without confusing a job advertisement with an application, or an AI suggestion with a confirmed fact.
+These screenshots have been anonymised and translated into English for this presentation. The application interface is currently Lithuanian. Companies, roles, notes, dates, salaries and assessment values shown here are fictional examples; the screen structure and workflow behaviour are preserved.
 
-## What the application does
+### 1. Review opportunities and choose the next action
 
-- **Finds and collects opportunities.** AI-assisted web search and Google Sheets import feed a review workflow. I can also check an individual job-ad URL.
-- **Checks and deduplicates advertisements.** URL normalization and portal identifiers help recognize repeated links. Separate page checks classify activity as active, inactive or unknown.
-- **Keeps applications and their history together.** An application can have several source links and a timeline of events. Event rules keep the timeline and application status consistent.
-- **Turns recruitment emails into proposals.** An AI-assisted Gmail integration suggests application events. I review the application, event type, date and notes before confirming them.
-- **Supports repeatable work.** Configurable schedules, run summaries and cancellation controls make recurring checks manageable.
+The dashboard is a review queue. Source links, vacancy activity checks, suitability assessments and suggested actions appear together, so I can decide what to do with each opportunity.
 
-```mermaid
-flowchart TD
-    A[Search or import opportunities] --> B[Check activity and duplicates]
-    B --> C[User reviews opportunity]
-    C --> D[Application and event history]
-    E[Recruitment email] --> F[AI proposes an event]
-    F --> G[User reviews and approves]
-    G --> H[Validate event and status rules]
-    H --> D
-```
+![Dashboard with fictional job opportunities, source checks, assessment scores and review actions](images/opportunity-review-dashboard.png)
 
-*Workflow illustration. AI suggestions require user review before entering the application history.*
+I can **create an application**, **link the advertisement to an existing application**, or choose **Do not repeat**. Finding a job advertisement does not automatically create an application or submit anything to an employer.
 
-## The product decisions that matter
+Activity evidence and suitability are separate. A vacancy can be active while still needing review for fit. The three assessment dimensions—interview outlook, experience fit and desired-role fit—support personal prioritisation. They are indicative estimates, not statistically validated interview probabilities.
 
-**Separate AI judgement from system rules.** AI helps discover opportunities and interpret messages. Deterministic logic handles link identity, activity evidence and event consistency. An inaccessible or contradictory job page remains “unknown”; uncertainty is visible rather than silently treated as success.
+### 2. Keep the decision and its history in one place
 
-**Keep the user in control.** Discovering an opportunity does not automatically create an application. An email-derived proposal does not automatically become a confirmed event. Review and approval are part of the workflow, not an afterthought.
+An application brings together the role, company, location, work model, salary, deadline, notes and assessments. Linked advertisements and events remain accessible from the same record.
 
-**Protect the meaning of history.** An older event should not overwrite a newer manually changed status. Several advertisements can describe the same opportunity, while distinct positions at the same company must remain distinguishable.
+![Application details for a fictional company, with role information, assessments and demonstration notes](images/application-details.png)
 
-These decisions are more important to me than simply adding another screen. They determine whether I can trust the application during everyday use.
+Several advertisements can belong to one application. Keeping the application separate from its source links allows each advertisement to retain its own URL, identifier and activity evidence without duplicating the application history.
 
-## Concrete acceptance examples
+The example remains **Not started**, with one linked advertisement and no saved events.
 
-| Scenario | Expected behaviour implemented in the application |
+### 3. Record what happened and keep the status consistent
+
+The event form records an action, its date and any notes. Rules validate the timeline and update the application status where appropriate.
+
+<img src="images/new-event.png" alt="New event dialog with a fictional application and a selected CV sent event" width="620">
+
+Here, **CV sent** is selected in an unsaved event. Saving it records that a CV was sent; this form does not send the CV.
+
+The manual main-stage sequence starts with CV sent and allows intermediate stages to be skipped. Rejection and inactivity events have their own status effects. A historical event must not overwrite a newer manually changed status.
+
+## Connected workflows
+
+| Area | What the application does |
 |---|---|
-| I import the same advertisement again | Recognize the existing normalized URL or portal identifier; do not create another advertisement. |
-| I add an “Inactive” event to an application | Update its status to inactive, subject to the timeline and status-date rules. |
-| AI identifies an interview invitation in an email | Prepare an editable proposal; create the event only after my confirmation. |
-| A job page requires login or provides conflicting evidence | Preserve an unknown activity result instead of claiming the vacancy is active. |
+| Opportunity discovery | Collects opportunities through AI-assisted search, Google Sheets import and individual URL checks. |
+| Advertisement checks | Uses normalised URLs and portal identifiers to recognise repeated advertisements; checks whether vacancies are active, inactive or unknown. |
+| Review and matching | Suggests whether to create an application or link an advertisement to an existing one, comparing both company and position. The user confirms the action. |
+| Recruitment emails | Converts relevant emails into editable event proposals. The user reviews the application, event type, date and notes before approval. |
+| Application history | Connects source advertisements, application details and events, with rules for event order and status changes. |
+| Recurring work | Supports configurable schedules, run summaries and cancellation controls for repeatable checks. |
+
+## Product decisions behind the screens
+
+**Separate suggestions from confirmed records.** AI supports discovery and message interpretation. Review steps let the user check and correct suggestions before they affect application history.
+
+**Keep uncertainty visible.** An inaccessible or contradictory vacancy page can remain unknown. An available link alone does not prove that a job is still open.
+
+**Protect the meaning of history.** Duplicate main-stage events and dates that reverse their order are checked. An interview-rescheduling email should not create another interview stage. Email approval can accommodate missing historical CV-sent information with a warning.
+
+**Model the relationships explicitly.**
+
+| Record | Responsibility |
+|---|---|
+| Application | The opportunity being considered or pursued, with its current status and decision context. |
+| Advertisement | An individual source link, portal identifier and vacancy-activity evidence. |
+| Event | What happened to the application and when. |
 
 ## How I develop and check it
 
-My working loop is practical: use the application, identify a problem, describe the required behaviour and exceptions, ask for an implementation, then check the result. I refine the rules when a change creates ambiguity elsewhere in the process.
+My working loop is to use the application, identify a problem, describe the required behaviour and exceptions, guide implementation, then check the result. I refine the rules when a change creates ambiguity elsewhere in the process.
 
-The repository includes backend and frontend tests, database migrations and a GitHub Actions workflow for linting, tests, migration checks and frontend builds. These checks support development; they do not replace functional testing or establish production readiness.
+The repository includes backend and frontend tests, database migrations and development checks. These support functional testing as the application evolves.
 
 **Technology:** Python, FastAPI, PostgreSQL, SQLAlchemy, Alembic, React, TypeScript, MUI, Docker Compose, an LLM API and Gmail OAuth.
 
-## A three-minute demonstration
+## A three-minute walkthrough
 
-1. Review a prepared opportunity: its source links, activity result and suggested details.
-2. Confirm an application and show its linked advertisements and event history.
-3. Review an email-derived event proposal, approve it and inspect the resulting timeline and status.
+1. Review a prepared opportunity: source evidence, assessments and the suggested next action.
+2. Create or open an application and show its linked advertisements, notes and history.
+3. Record an event and explain how its date and type affect the application status.
 
-For an external walkthrough, I would use fictional demonstration data, without exposing personal emails or application notes.
-
-Career CRM shows how I connect needs, rules, implementation and feedback: building useful functionality, evaluating AI-assisted results and improving reliability through actual use.
+The walkthrough uses fictional data and demonstrates the internal review and tracking process.
