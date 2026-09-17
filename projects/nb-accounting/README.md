@@ -2,76 +2,81 @@
 
 # NB Accounting
 
-## Accounting software built around the full transaction journey
+## E-commerce bookkeeping built around rules, checklists and clear next actions
 
-I am developing NB Accounting as a personal application for multiple organisations, bookkeeping and marketplace operations. The idea comes from my experience in finance, ERP systems and e-commerce: a transaction rarely arrives as one clean record ready for the ledger. Orders, invoices, fees, refunds, payouts and bank entries need to be connected without losing their meaning.
+I started building NB Accounting to make my own bookkeeping faster and reduce reliance on paid integrations that covered only part of the workflow.
 
-I define the functional behaviour and data rules, set priorities, test the results and ask AI coding tools to implement or correct the code. This project lets me carry a requirement through to an application that I can inspect and improve.
+I work through accounting checklists, so I designed the system around that approach. The dashboard brings together period tasks, configurable checks and exceptions that need attention. It helps me see what is complete, where information is missing and which balances do not match.
 
-**Status:** Personal application under active development, designed for local use. Source code is private.
+My role is to define the requirements, accounting rules and user workflows, guide AI-assisted development, and test the system against my own working process.
 
-## The problem I wanted to solve
+**Status:** Personal application under active development, used locally. Source code is private.
 
-Marketplace data, accounting documents and bank activity describe different parts of the same business process. Importing a record is not enough to determine how it should affect accounting. Organisation settings, document states, account mappings and dates all matter.
+## See the system
 
-I wanted a workflow in which incoming data can be reviewed, transformed into an accounting document and posted under explicit rules. A user should be able to understand how a source transaction reached the journal and why an action is allowed or blocked.
+These application screenshots have been anonymised and translated for presentation. Company, supplier and account details have been replaced; financial amounts are sample data. The displayed rule logic and completion states are preserved.
 
-## What the application includes
+### 1. Know what needs attention
 
-- **Organisation-specific configuration:** chart of accounts, VAT schemes, currencies, partners, bank accounts and document numbering.
-- **Sales and purchase documents:** manual entry, approval and posting, with access to the resulting accounting entries.
-- **Marketplace import workflows:** Etsy staging and WooCommerce API imports, including separate logical WooCommerce and Faire sources.
-- **Banking and payments:** bank operations, balances, payment-file preparation and statement recognition.
-- **Accounting reports:** general-ledger summary and account turnover, based on posted documents.
+The period checklist groups tasks across the general ledger, banking, purchases and sales. Automatic checks use posted entries, imported statements and documents. Manual tasks and confirmations are visibly distinguished.
 
-## A transaction's path through the system
+![Period checklist showing completed checks, manual confirmations and outstanding actions](images/checklist-dashboard.png)
 
-```mermaid
-flowchart TD
-    A[Marketplace source data] --> B[Import staging]
-    B --> C[Review and create document]
-    D[Manual document entry] --> C
-    C --> E[Approve and post]
-    E --> F[Journal entries]
-    F --> G[Accounting reports]
-    H[Bank statement] --> I[Recognise and match bank operation]
-    I --> F
-```
+In this example, an outstanding sales-document check and a manual payment-balance review remain open. A manually confirmed task still shows its automatic result, so the underlying exception stays visible.
 
-*Workflow illustration. Import staging and accounting documents are separate parts of the process.*
+### 2. Turn an accounting check into a configurable rule
 
-## Product decisions and controls
+A rule combines a data function, comparison operator and expected value. The user selects the account, period and tolerance, then previews the result before saving.
 
-**Imported data needs a review stage.** Source records stay separate from accounting documents. This gives the user a place to resolve mapping and data issues before the information affects the journal. Reports include posted documents.
+![Rule editor checking that a selected bank account has zero unprocessed statement lines](images/unprocessed-statement-rule.png)
 
-**Closed periods need enforceable boundaries.** The application checks the posting date against the latest closed period. Period closure checks distinguish blocking draft records from warnings about unprocessed source data. Reopening follows a controlled sequence: only the latest closure can be reopened.
+This rule checks that the selected account has **zero unprocessed statement lines**. It makes a recurring bookkeeping check explicit and repeatable.
 
-**Payment files need structured validation.** The application creates ISO 20022 pain.001 bank-payment XML. It checks mandatory values, positive amounts and identifier formats, calculates totals and validates the generated XML against its schema. File-format validation is one control in the payment workflow. It does not prove that a bank has accepted or executed a payment.
+### 3. Compare the ledger with the imported bank statement
 
-**Configuration should reflect the organisation.** Account selection, partners, tax mappings and document numbering must make sense for the organisation and transaction. I use actual workflow results to identify missing mappings or rules that need refinement.
+The reconciliation rule compares the G/L account balance with the imported statement balance at the end of the selected period.
 
-## Concrete acceptance examples
+![Balance reconciliation rule with unequal sample balances and a Not done result](images/balance-reconciliation-rule.png)
 
-| Scenario | Expected behaviour implemented in the application |
+The sample balances are **EUR 1,200.00** and **EUR 1,450.00**. With zero tolerance, the equality check fails and the preview shows **Not done**. Missing input data produces an unknown result rather than a successful check.
+
+## Connected workflows
+
+| Area | Current scope |
 |---|---|
-| A marketplace record has been imported but no accounting document has been posted | Keep it outside posted accounting reports. |
-| A user tries to post into a closed period | Reject the posting rather than silently changing the closed period. |
-| Draft accounting records remain within the period being closed | Report the blockers and prevent closure. |
-| A payment contains a zero amount or fails the supported format checks | Reject the export and identify the validation problem. |
-| A user tries to reopen an older closure while a newer one remains closed | Reject the action and preserve the required reopening sequence. |
+| Marketplace imports | Etsy, WooCommerce and direct Faire imports, with source records available for review before accounting documents are posted. |
+| Payment imports | PayPal and Stripe imports, reviewable statement records and matching workflows. |
+| Purchase invoices | Rule-based extraction from text-based PDFs, field checks and duplicate detection before posting. Scanned invoices require manual entry. |
+| Orders and inventory | Visibility of orders needing attention, internal stock tracking, marketplace SKU mapping and controlled stock-quantity updates to existing Faire listings. |
+| Accounting | Organisation-specific configuration, sales and purchase documents, journal entries, bank operations and reports based on posted documents. |
+| Period controls | Checks before closing a period, blocked posting into closed periods and controlled reopening of the latest closure. |
+
+## Tax reporting workflows
+
+| Workflow | Current scope |
+|---|---|
+| Lithuania — i.SAF | XML generation, file upload to VMI and processing-status tracking. Upload acceptance and final register submission are separate steps. |
+| Union OSS | Quarterly calculations and report preparation. Direct submission to VMI is planned. |
+| Germany — VAT | UStVA report preparation and ELSTER XML export for portal import. Filing is completed in the portal. |
+| UK — VAT | Return preparation and an HMRC submission workflow. Return figures are entered or imported from CSV; they are not automatically calculated from the ledger. |
+
+## Product decisions behind the screens
+
+- **Checks should explain their result.** Show the values being compared, the selected period and missing inputs. Keep manual confirmation separate from the automatic result.
+- **Imported data needs a review stage.** Resolve mappings and document issues before source records affect the posted ledger.
+- **Rules should be configurable.** Account selection, tolerances, recurrence and deadlines belong to the user's accounting process.
+- **Financial controls need clear boundaries.** Posting, period closure, payment-file validation and external submission are distinct steps with their own checks.
 
 ## How I develop and check it
 
-I trace the process across source data, documents, accounting entries and bank operations. I describe the required behaviour, compare the implemented result with that expectation and direct corrections. I pay particular attention to duplicates, partial refunds, dates, currency handling and correction paths.
-
-The repository includes automated tests for business rules and technical validation. I treat those tests as support for functional checks. The project continues to evolve and is not presented as a certified or production-ready accounting service.
+I map the process and data relationships, define the required behaviour, compare the implemented result with that expectation and direct corrections. I use the application to investigate mismatches and refine rules, including duplicates, dates, currencies and correction paths. Automated tests support these functional checks.
 
 **Technology:** Python, FastAPI, SQLAlchemy, PostgreSQL, Alembic, React, TypeScript and Docker Compose.
 
-## A three-minute demonstration
+## A three-minute walkthrough
 
-1. Start with a prepared source record and explain what needs review before creating an accounting document.
-2. Open a document and trace its posted entries into the ledger.
-3. Demonstrate a rejected action, such as posting into a closed period, and explain the acceptance rule behind it.
+1. Open the period checklist and identify an unfinished check.
+2. Open its rule and explain the source data, comparison and expected result.
+3. Preview a balance mismatch and trace the records that need attention.
 
-An external walkthrough would use fictional organisations and transactions. Live bank, marketplace and tax submissions are outside that demonstration.
+A walkthrough uses fictional organisations and transactions. External payment and tax submissions are not part of the demonstration.

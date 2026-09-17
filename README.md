@@ -22,13 +22,17 @@ Career CRM connects opportunity discovery, advertisement checks, applications an
 
 ### [NB Accounting](projects/nb-accounting/README.md)
 
-**An accounting application for multiple organisations and marketplace workflows.**
+**E-commerce bookkeeping built around rules, checklists and clear next actions.**
 
-NB Accounting connects source imports, accounting documents, journal entries and bank operations. Review stages separate incoming data from posted accounting records. Controls protect closed periods and validate payment files.
+NB Accounting brings marketplace and payment imports into a bookkeeping workflow centred on a period checklist. Configurable rules check imported data, outstanding documents and bank balances, showing what is complete and what needs attention.
 
-**A decision worth exploring:** when imported data should become an accounting entry, and what must block that transition.
+[![NB Accounting period checklist with anonymised sample data](projects/nb-accounting/images/checklist-dashboard.png)](projects/nb-accounting/README.md#see-the-system)
 
-[Read the NB Accounting case study](projects/nb-accounting/README.md)
+*Anonymised application screenshot with English labels and sample data.*
+
+**A decision worth exploring:** how to make an accounting checklist reflect the underlying records, while keeping manual confirmation visible.
+
+[Explore the screenshots and NB Accounting case study](projects/nb-accounting/README.md#see-the-system)
 
 ## My contribution
 
