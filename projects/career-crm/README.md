@@ -8,9 +8,18 @@ I built Career CRM to manage my own job search: finding opportunities, deciding 
 
 The starting problem was fragmented information. The same opportunity could appear on several websites, while notes, emails and application history lived elsewhere. I wanted one workspace where I could review suggestions, understand the evidence and keep the next action clear.
 
-I define the needs, data relationships and workflow rules, guide AI-assisted implementation and test the behaviour through actual use.
-
 **Status:** Personal application under active development, used locally. Source code is private.
+
+## My contribution
+
+| Area | What I defined and decided |
+|---|---|
+| **Principle** | AI may suggest, but only the user records. Every AI result is a proposal until it is reviewed and confirmed. |
+| **Data model** | The application, the advertisement and the event as separate records, so that one application can have several sources and a clean history. |
+| **Status rules** | Event order, which events change the status, and when a historical event must not overwrite a newer manual status. |
+| **Evidence** | Separating "the link works" from "the vacancy is open", and keeping an unknown result unknown. |
+| **Housekeeping** | Closing stalled or inactive applications with two manual actions, each previewed with counts before anything changes. Scheduled automatic closure was replaced. |
+| **Verification** | Daily use, then a description of the expected behaviour for each mismatch, a correction and a test. |
 
 ## See the system
 
@@ -55,6 +64,8 @@ The manual main-stage sequence starts with CV sent and allows intermediate stage
 | Review and matching | Suggests whether to create an application or link an advertisement to an existing one, comparing both company and position. The user confirms the action. |
 | Recruitment emails | Converts relevant emails into editable event proposals. The user reviews the application, event type, date and notes before approval. |
 | Application history | Connects source advertisements, application details and events, with rules for event order and status changes. |
+| Prioritisation | A manual A–D priority grade on each application, separate from the combined assessment score used for sorting. |
+| Closing applications | Stalled and inactive applications are closed by two manual actions with a preview, not by a schedule. |
 | Recurring work | Supports configurable schedules, run summaries and cancellation controls for repeatable checks. |
 
 ## Product decisions behind the screens
